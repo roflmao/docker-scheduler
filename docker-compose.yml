@@ -1,0 +1,22 @@
+hest:
+  labels:
+    io.rancher.container.pull_image: always
+    io.rancher.container.hostname_override: container_name
+    io.rancher.sidekicks: scheduler-sidekick
+  image: ubuntu:latest
+  command:
+  - /bin/bash
+  volumes:
+  - /tmp/
+  stdin_open: true
+
+scheduler-sidekick:
+  labels:
+    io.rancher.container.pull_image: always
+    io.rancher.container.hostname_override: container_name
+  tty: true
+  command: 1min /bin/sh -c "date >> /tmp/hest && /bin/cat /etc/hostname >> /tmp/hest"
+  image: roflmao/docker-scheduler
+  stdin_open: true
+  volumes_from:
+  - hest
